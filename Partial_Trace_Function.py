@@ -22,7 +22,7 @@ def partial_traceB(A:Qobj,B:Qobj)->Qobj:
     rho_AB = qt.tensor(A, B)
     rho_B = rho_AB.ptrace(1)
     return rho_B
-if __name__ == "__main__": #oxi
+if __name__ == "__main__": 
     #TESTS
     zero = qt.basis(2, 0)
     one = qt.basis(2, 1)

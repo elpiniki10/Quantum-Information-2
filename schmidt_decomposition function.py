@@ -46,6 +46,14 @@ def qt_schmidt_decomposition(state:Qobj):
     return schmidt_basisA,schmidt_coeffs,schmidt_basisB,schmidt_dec, (dim_A, dim_B)
 
 def is_entangled(state):
+    """Determines if a pure bipartite state is entangled by evaluating its Schmidt rank.
+
+    Args:
+        state (Qobj): The pure bipartite quantum state to check.
+
+    Returns:
+        bool: True if the state is entangled (Schmidt rank > 1), False if it is separable (Schmidt rank = 1).
+    """
     u, s, v,S, d = qt_schmidt_decomposition(state)
     schmidt_rank = np.count_nonzero(s>1e-10)#counts non zero schmidt coefficients
     if schmidt_rank == 1:#seperable 
@@ -53,6 +61,14 @@ def is_entangled(state):
     else:#entangled
         return True
 def confirm_schmidt(psi):
+        """Verifies that the calculated Schmidt decomposition accurately reconstructs the original quantum state.
+
+    Args:
+        psi (Qobj): The original pure bipartite state (ket) to be decomposed and reconstructed.
+
+    Returns:
+        bool: True if the reconstructed state matches the original state, False otherwise.
+    """
         u,s,vh,S,d=qt_schmidt_decomposition(psi)
         reconstructed_state=0
         for sk in S:

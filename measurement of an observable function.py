@@ -13,17 +13,43 @@ from qutip.measurement import measure, measurement_statistics
 
 
 
-def expectation_value(rho: Qobj, obs: Qobj):#expect value of observable (obs) rhod ensity matrix
-     if rho.isket:
+def expectation_value(rho: Qobj, obs: Qobj):
+    """Calculates the expectation value of an observable for a given quantum state.
+
+    Args:
+        rho (Qobj): The density matrix or ket vector representing the quantum state.
+        obs (Qobj): The observable operator to be measured.
+
+    Returns:
+        The expectation value of the observable.
+    """
+    if rho.isket:
         rho= qt.ket2dm(rho)
 
-     return (rho * obs).tr()
+    return (rho * obs).tr()
 
-def eigenvalues_vectors(obs: Qobj):#Return eigenvalues and eigenvectors of the observable
+def eigenvalues_vectors(obs: Qobj):
+    """Calculates the eigenvalues and eigenvectors of an observable.
+
+    Args:
+        obs (Qobj): The observable operator.
+
+    Returns:
+        eigenvalues and an array of corresponding eigenvector Qobjs.
+    """
     eigvals, eigvecs = obs.eigenstates()
     return eigvals, eigvecs
 
-def measurement_probabilities(rho: Qobj, obs: Qobj):#Return eigenvalues and their measurement probabilities for measuring obs on state ρ
+def measurement_probabilities(rho: Qobj, obs: Qobj):
+    """Calculates the eigenvalues and their corresponding measurement probabilities using the Born rule.
+
+    Args:
+        rho (Qobj): The density matrix or ket vector representing the quantum state.
+        obs (Qobj): The observable operator to be measured.
+
+    Returns:
+         the possible eigenvalues and their measurement probabilities
+    """
     if rho.isket:
         rho= qt.ket2dm(rho)
     eigvals, eigvecs = eigenvalues_vectors(obs)
@@ -36,7 +62,16 @@ def measurement_probabilities(rho: Qobj, obs: Qobj):#Return eigenvalues and thei
 
     return eigvals, probabilities
 
-def plot_eigenvalue_histogram(eigvals, probabilities):# histogram of eigenvalues and probabilities
+def plot_eigenvalue_histogram(eigvals, probabilities):
+    """Plots a histogram showing the probabilities of measuring each eigenvalue.
+    
+        Args:
+            eigvals: The possible eigenvalues of the observable.
+            probabilities (list): The corresponding measurement probabilities for each eigenvalue.
+    
+        Returns:
+            displays a matplotlib plot 
+        """
     plt.bar([str(ev) for ev in eigvals], probabilities)
     plt.xlabel("Eigenvalues")
     plt.ylabel("Probability")
@@ -44,6 +79,16 @@ def plot_eigenvalue_histogram(eigvals, probabilities):# histogram of eigenvalues
     plt.show()
 
 def multiple_eigenval_measurments(state,observable,times:int):
+    """Simulates multiple measurements of an observable on a quantum state.
+
+    Args:
+        state (Qobj): The quantum state to be measured.
+        observable (Qobj): The observable operator.
+        times (int): The number of measurement simulations to perform.
+
+    Returns:
+        dict: A dictionary mapping measured eigenvalues to the number of times they were observed.
+    """
     results={}
     for _ in range(times):
         eigenval,eigenvec=measure(state,observable)
@@ -53,6 +98,16 @@ def multiple_eigenval_measurments(state,observable,times:int):
     return results
 
 def multiple_eigenval_histogram(state,observable,times:int):
+    """Plots a histogram of multiple simulated measurement results .
+
+    Args:
+        state (Qobj): The quantum state to be measured.
+        observable (Qobj): The observable operator.
+        times (int): The number of measurement simulations to perform.
+
+    Returns:
+         displays a matplotlib plot
+    """
     results=multiple_eigenval_measurments(state,observable,times)
     plt.bar([str(key) for key in results.keys()], list(results.values()))
     plt.xlabel("Eigenvalues")

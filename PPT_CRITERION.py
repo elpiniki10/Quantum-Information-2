@@ -2,13 +2,20 @@ import qutip as qt
 from qutip import Qobj
 
 def PPT_crit_sufficient(rho:Qobj)->bool:
-    """Positive partial transpose criterion :provides necessery and sufficient condition for mixed state of 2 subsystems to be entangled if (1a@T)ρ<0 ->εντ
-    
-    only for {2,2}{2,3}{3,2}
+    """Applies the Positive Partial Transpose (PPT) criterion to definitively check for entanglement.
+    This provides a necessary and sufficient condition for a mixed state of bipartite 
+    subsystems to be entangled. If the partially transposed density matrix has negative 
+    eigenvalues, the state is entangled. This strict necessity and sufficiency is valid 
+    only for Hilbert space dimensions 2x2, 2x3, and 3x2.
+
     Args:
-        rho (Qqoj): density matrix
+        rho (Qobj): The density matrix or ket vector of the quantum state to check.
+
     Returns:
-        Boolean: Is entangled?
+        bool: True if the state is entangled, False if it is separable.
+        
+    Raises:
+        ValueError: If the subsystem dimensions are not [2,2], [2,3], or [3,2].
     """
     if rho.isket:
         rho= qt.ket2dm(rho)
@@ -25,13 +32,14 @@ def PPT_crit_sufficient(rho:Qobj)->bool:
         raise ValueError("PPT criterion not necessary and sufficient for  this Hilbert space.")
     
 def PPT_crit(rho:Qobj)->bool:
-    """Positive partial transpose criterion :provides necessery and sufficient condition for mixed state of 2 subsystems to be entangled if (1a@T)ρ<0 ->εντ
-    
-    only for {2,2}{2,3}{3,2}
+    """Positive partial transpose criterion.Sufficient condition
+    Applies the Positive Partial Transpose (PPT) criterion.Sufficient condition
+
     Args:
-        rho (Qqoj): density matrix
+        rho (Qobj): The density matrix or ket vector of the quantum state to check.
+
     Returns:
-        Boolean: Is entangled?
+        bool: True if the state is entangled (negative eigenvalue detected), False otherwise.
     """
     if rho.isket:
         rho= qt.ket2dm(rho)
@@ -40,7 +48,7 @@ def PPT_crit(rho:Qobj)->bool:
     for λ in eigenvals:
         if  λ <-1e-8:
             return True
-    else: #else is outside so even if the neg λ was second it would still decect ti 
+    else: 
         return False
     
 # if __name__ == "__main__":
