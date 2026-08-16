@@ -1,6 +1,4 @@
 import numpy as np
-
-import itertools
 import qutip as qt
 from qutip import basis, tensor, rand_ket, qeye
 from qutip_qip.operations import snot, cnot, rx, rz
@@ -24,10 +22,10 @@ teleportation.add_measurement("M1", targets=[1], classical_store=0)
 #bobs corrections
 teleportation.add_gate("X", targets=[2], classical_controls=[0])
 teleportation.add_gate("Z", targets=[2], classical_controls=[1])
-#bobs measurment???????????????????????????????
+#bobs measurment?
 #teleportation.add_measurement("M2", targets=[2], classical_store=0)
 
-teleportation.draw()
+
 
 if __name__ == "__main__":# test
     alice = (qt.basis(2, 0) + qt.basis(2, 1)).unit()
@@ -40,3 +38,4 @@ if __name__ == "__main__":# test
     #print("Possible states:   ",final_results.final_states,"probabilities:   " ,final_results.probabilities)
     bob = state_final.ptrace(2)#get only bobs qubit 
     print("fidelity",qt.fidelity(alice,bob))
+    #teleportation.draw()

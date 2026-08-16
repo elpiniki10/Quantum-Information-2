@@ -67,8 +67,13 @@ if __name__ == "__main__": #oxi
     # print(measure(qt.basis(2,1),qt.sigmax()))
     # eigenvalues, eigenstates, probabilities = measurement_statistics(qt.basis(2,1),qt.sigmax())
     # print(eigenvalues, eigenstates, probabilities)
+    #measure first
     state00=qt.tensor(qt.basis(2,1),qt.basis(2,1))
-    print(measure(qt.ket2dm(state00),qt.tensor(qt.sigmax(),qt.qeye(2))))
+    print(measure(state00,qt.tensor(qt.sigmax(),qt.qeye(2))))
+
+
+
+
 
 
 

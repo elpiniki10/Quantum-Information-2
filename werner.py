@@ -19,5 +19,7 @@ def werner()->Qobj:
     # rhowerner=p*(qt.ket2dm(qt.tensor(zero,zero))+qt.tensor(qt.tensor(one,one),qt.tensor(zero,zero).dag()))
     werner=p*qt.ket2dm(qt.bell_state('00'))+(1-p)*qt.tensor((qt.qeye(2)/2),(qt.qeye(2)/2))
     return werner
+
+
 if __name__ == "__main__":# test
     print(werner())

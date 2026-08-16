@@ -15,12 +15,10 @@ def is_ent_witness(rho:Qobj,W:Qobj)->bool:
 
     if np.real(a.tr()) <1e-10:
         return True
-    
-rho=qt.ket2dm(qt.bell_state("00"))
-w_SWAP=qt.swap(2,2)#2 qbts of 2 dims each
-print(is_ent_witness(rho,w_SWAP))
-zero=qt.basis(2,0)
-one=qt.basis(2,1)
-b00=(qt.tensor(zero,zero)+qt.tensor(one,one)).unit
-rho_b00=qt.ket2dm(b00)
-print(is_ent_witness(rho,w_SWAP))
+if __name__ == "__main__": 
+    rho=qt.ket2dm(qt.bell_state("00"))
+    w_SWAP=qt.swap(2,2)#2 qbts of 2 dims each
+    print(is_ent_witness(rho,w_SWAP))
+    zero=qt.basis(2,0)
+    one=qt.basis(2,1)
+    print(is_ent_witness(rho,w_SWAP))
