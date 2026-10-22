@@ -1,78 +1,33 @@
-from correlation import is_ent_MBM,is_ent_strenghenedCHSH1,is_ent_stenghenedCHSH3,is_ent_stenghenedCHSH2
-from matplotlib_venn import venn2,venn3 
-from matplotlib import pyplot as plt
+"""Recreates Fig. 4: random 2-qubit states are tested with the MBM criterion (33) and the
+three strengthened CHSH inequalities (42, 43, 46).
+Saves the numbers for every state in venn_results.txt (autosave every CHECKPOINT_EVERY states,
+resumes after a crash). Μakes the Venn diagrams only from that file."""
+
+from correlation import sum_PCC, CHSH1_value, CHSH2_value, CHSH3_value, is_entangled_PPT
+from results_io import run_checkpointed
+from venn_plot import make_venn_diagrams
 import qutip as qt
 
-def venn_ent():
-    """Generates random two-qubit states and evaluates them for entanglement.
-Returns four sets containing the indices of the states identified as 
-entangled by the MBM criterion and three strengthened CHSH inequalities.
-"""
-    a = [qt.sigmax(), qt.sigmay()]
-    b = [qt.sigmax(), qt.sigmay()]
-    
-    entangled_set_MBM = set()
-    entangledCHSH1=set()
-    entangledCHSH2=set()
-    entangledCHSH3=set()
-    
-    num_states = 1000
-    
-    for i in range(num_states):
+NUM_STATES = 1000000
+CHECKPOINT_EVERY = 100000# Save results every 
+RESULTS_FILE = "venn_results.txt"
+#observables
+a = [qt.sigmax(), qt.sigmay()]
+b = [qt.sigmax(), qt.sigmay()]
 
-        Sab=qt.rand_dm([2, 2])
-        
-        if is_ent_MBM(Sab, a, b):
-            entangled_set_MBM.add(i)
-    # 42
-        if is_ent_strenghenedCHSH1(Sab, a, b):
-            entangledCHSH1.add(i)
-                
-    #43
-        if is_ent_stenghenedCHSH2(Sab, a, b):
-            entangledCHSH2.add(i)
-                
-        #46
-        if is_ent_stenghenedCHSH3(Sab, a, b):
-            entangledCHSH3.add(i)   
-            
-    return entangled_set_MBM,entangledCHSH1,entangledCHSH2,entangledCHSH3
 
-mbm,c1,c2,c3=venn_ent()
-chsh= c1 |c2|c3
-total_identified = len(mbm | chsh)
-total_chsh=len(chsh)
+HEADER = ["state","ppt_ent","mbm","chsh1","chsh2","chsh3"]
 
-def format_percenta(x):
-    if total_identified==0:
-        return "0%"
-    e=(x*100)/total_identified
-    return f"{e:.2f}%"
+def compute_row(i:int):
+    """"Calculates and returns all quantities that will be saved for the i-th random state.
+    The first column is the state index, the second is 1 if the state is entangled (PPT test), else 0, the third is |Cor{A1,B1}|+|Cor{A2,B2}| (entangled if >1), and the last three are the CHSH values."""
+    Sab=qt.rand_dm([2, 2])
+    return [i,int(is_entangled_PPT(Sab)),sum_PCC(Sab,a,b),
+            CHSH1_value(Sab,a,b),CHSH2_value(Sab,a,b),CHSH3_value(Sab,a,b)]
 
-def format_percentb(x):
-    if total_chsh==0:
-        return "0%"
-    e=(x*100)/total_chsh
-    return f"{e:.2f}%"
+if __name__ == "__main__":
+    # results
+    run_checkpointed(RESULTS_FILE,HEADER,NUM_STATES,compute_row,CHECKPOINT_EVERY)
 
-plt.figure(figsize=(8, 8))
-venn = venn2(
-    subsets=(mbm, chsh), 
-    set_labels=('MBM', 'Any CHSH'),
-    set_colors=('gold', 'silver'),
-    subset_label_formatter=format_percenta
-)
-
-plt.title("a)Entangled states identified by any method")
-plt.show()
-
-plt.figure(figsize=(8, 8))
-venn = venn3(
-    subsets=(c1,c2,c3), 
-    set_labels=('CHSH1', 'CHSH2','CHSH3'),
-    set_colors=('gold', 'silver','red'),
-    subset_label_formatter=format_percentb
-)
-
-plt.title("b)Entangled states identified by CHSH")
-plt.show()
+    # graphs
+    make_venn_diagrams(RESULTS_FILE)
