@@ -1,0 +1,22 @@
+row = 799  (rebuild with draw_sample(799))
+d = 2
+lhs = 0.7626608866
+rhs = 1
+|Cor{A1,B1}| = 0.5190958258
+|Cor{A2,B2}| = 0.2435650608
+
+A1 (= B1):
+eigvals = [-0.255444  0.63054 ]
+normalised spectrum = [0. 1.]
+min gap = 1
+eigvecs (columns) =
+[[-0.377112+0.j       -0.926168+0.j      ]
+ [ 0.90993 +0.172665j -0.370501-0.070305j]]
+
+A2 (= B2):
+eigvals = [-0.488984  0.867688]
+normalised spectrum = [0. 1.]
+min gap = 1
+eigvecs (columns) =
+[[ 0.414059+0.j       -0.91025 +0.j      ]
+ [ 0.874973-0.250952j  0.398012-0.114154j]]
