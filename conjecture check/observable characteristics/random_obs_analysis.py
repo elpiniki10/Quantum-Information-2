@@ -1,12 +1,20 @@
+"""Looks at which observables come close to the eq 38 bound. Same test as check_mbmconj_test.py
+(eq 36 observables in a Haar random basis, equal weight eq 35 states), but samples with
+lhs > 0.7*rhs are flagged and the eigenvalues, eigenvectors and trace norm of their observables are
+saved to DETAILS_DIR/row_i.txt. Plots histograms of these properties for the flagged samples per d."""
+
 import os
+import sys
 import numpy as np
 import qutip as qt
 import matplotlib.pyplot as plt
 
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))  # repo root, for the shared modules
+
 from correlation import PCC
 from results_io import run_checkpointed, load_results
 
-RESULTS_FILE = "obs_2results.txt"
+RESULTS_FILE = "random_obs_analysis_4_5results.txt"
 COMPUTE = True  
 PLOT = True     
 D_MIN, D_MAX = 4, 5
@@ -14,7 +22,7 @@ N_SAMPLES = 2000  # random states per d
 N_TERMS = 4     # product states in each mixture (eq 35 has 4)
 SEED = 0        
 TOL = 1e-9      
-DETAILS_DIR = "obs_details_eq36"  # observables of samples with lhs > 0.7*rhs
+DETAILS_DIR = "random_obs_analysis_details_d4_5"  # observables of samples with lhs > 0.7*rhs
 HEADER = ["d", "lhs", "rhs", "diff", "violated", "flagged"]
 
 

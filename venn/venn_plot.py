@@ -4,9 +4,11 @@ Region labels are exclusive regions, so they add up to 100%.
 """
 
 from math import sqrt
+import os
 import sys
 from matplotlib import pyplot as plt
 from matplotlib_venn import venn2,venn3_unweighted
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # repo root, for the shared modules
 from results_io import load_results
 
 RESULTS_FILE = "venn_results.txt"

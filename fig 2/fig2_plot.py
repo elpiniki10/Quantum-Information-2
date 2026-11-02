@@ -1,8 +1,10 @@
 """Fig. 2, step 2 (plots): made only from fig2_results.txt (run fig2_data.py first).
 """
 
+import os
 import sys
 import matplotlib.pyplot as plt
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # repo root, for the shared modules
 from results_io import load_results
 
 RESULTS_FILE = "fig2_results.txt"

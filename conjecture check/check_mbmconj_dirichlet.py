@@ -1,22 +1,26 @@
 """Random separable states with the structure of the counterexample of eq 35, tested against eq 38.
 eq 35 is ¼ Σ_{k=0,1} (Π_ek⊗Π_ek + Π_hk⊗Π_hk). Here every sample is a random mixture
 Σ_j p_j Π_xj⊗Π_xj with random weights p (Dirichlet) and random vectors x_j picked from the two
-mutually unbiased bases {|e_k>} ∪ {|h_k>}. The observables are always those of eq 36, and
+mutually unbiased bases {|e_k>} u {|h_k>}. The observables are always those of eq 36, and
 |Cor{A1,B1}|+|Cor{A2,B2}| is compared with the conjectured bound 2-4/(2+d) of eq 38.
 """
 
 
+import os
+import sys
 import numpy as np
 import qutip as qt
 import matplotlib.pyplot as plt
 
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # repo root, for the shared modules
+
 from correlation import PCC
 from results_io import run_checkpointed, load_results
 
-RESULTS_FILE = "countermbm_results.txt"
+RESULTS_FILE = "dirichlet_results.txt"
 COMPUTE = True  # compute the missing results and save them in RESULTS_FILE
 PLOT = True     # plot from the saved results in RESULTS_FILE (nothing is computed)
-D_MIN, D_MAX = 2, 26
+D_MIN, D_MAX = 2, 21
 N_SAMPLES = 100  # random states per d
 N_TERMS = 4     # product states in each mixture (eq 35 has 4)
 SEED = 0        # sample i always uses the same random numbers, so a resumed run gives the same results
@@ -108,16 +112,16 @@ def plot_results(data):
     #         fontsize=12, ha="center", va="center")
     ax.set_xlim(dims.min() - 1, dims.max() + 0.5)
     ax.set_ylim(0, 2)  # starts at 0 (paper: 1) because most samples give values below 1
-    ax.set_xticks([2, 5, 10, 15, 20, 26])
+    ax.set_xticks([2, 5, 10, 15, 20, 21])
     ax.set_xlabel(r"Dimensions $d$")
     ax.set_ylabel(r"Entanglement criterion bound  $2-4/(2+d)$")
     ax.legend(loc="lower right")
-    plt.savefig("graph_counter.png", dpi=300, bbox_inches="tight")
+    plt.savefig("graph_dirichlet.png", dpi=300, bbox_inches="tight")
     plt.show()
 
 
 if __name__ == "__main__":
-    # delete countermbm_results.txt to recompute, e.g. after changing D_MIN, D_MAX, N_SAMPLES or N_TERMS
+    # delete dirichlet_results.txt to recompute, e.g. after changing D_MIN, D_MAX, N_SAMPLES or N_TERMS
     if COMPUTE:
         run_checkpointed(RESULTS_FILE, HEADER, (D_MAX - D_MIN + 1) * N_SAMPLES, compute_row)
     data = load_results(RESULTS_FILE)

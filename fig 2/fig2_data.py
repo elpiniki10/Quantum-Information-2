@@ -8,8 +8,11 @@ and whether the output is entangled (PPT test). Results go to fig2_results.txt.
 Make the figures afterwards with fig2_plot.py.
 """
 
+import os
+import sys
 import qutip as qt
 import numpy as np
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # repo root, for the shared modules
 from correlation import sum_PCC, is_entangled_PPT
 from results_io import run_checkpointed
 Pauli_A = [qt.sigmax(), qt.sigmay(), qt.sigmaz()]

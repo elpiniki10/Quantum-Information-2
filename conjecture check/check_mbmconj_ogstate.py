@@ -3,14 +3,18 @@ For every d the separable state of eq 35 is measured with the observables of eq 
 |Cor{A1,B1}|+|Cor{A2,B2}| is compared with the conjectured bound 2-4/(2+d) of eq 38.
 ."""
 
+import os
+import sys
 import numpy as np
 import qutip as qt
 import matplotlib.pyplot as plt
 
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # repo root, for the shared modules
+
 from correlation import PCC
 from results_io import run_checkpointed, load_results
 
-RESULTS_FILE = "mbm_results.txt"
+RESULTS_FILE = "ogmbm_results.txt"
 COMPUTE = True  # compute the missing results and save them in RESULTS_FILE
 PLOT = True     # plot from the saved results in RESULTS_FILE (nothing is computed)
 D_MIN, D_MAX = 2, 40
@@ -107,7 +111,7 @@ def plot_results(dims, lhs_vals):
 
 
 if __name__ == "__main__":
-    # delete mbm_results.txt to recompute, e.g. after changing D_MIN, D_MAX or HEADER
+    # delete ogmbm_results.txt to recompute, e.g. after changing D_MIN, D_MAX or HEADER
     if COMPUTE:
         run_checkpointed(RESULTS_FILE, HEADER, D_MAX - D_MIN + 1, compute_row)
     data = load_results(RESULTS_FILE)

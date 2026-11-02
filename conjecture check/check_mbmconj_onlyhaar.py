@@ -1,15 +1,25 @@
+"""Tests the conjectured entanglement bound of eq 38, |Cor{A1,B1}|+|Cor{A2,B2}| <= 2-4/(2+d),
+with the eq 36 observables (ε=0) in the standard basis and its Fourier transform, on random
+separable states of the eq 35 form where only the kets are Haar random and p is fixed equal weights 1/4),
+for d = D_MIN..D_MAX. A sample above the bound would be a counterexample. Results are checkpointed
+to RESULTS_FILE, summarised per d and plotted in the style of fig 3."""
+
+import os
+import sys
 import numpy as np
 import qutip as qt
 import matplotlib.pyplot as plt
 
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # repo root, for the shared modules
+
 from correlation import PCC
 from results_io import run_checkpointed, load_results
 
-RESULTS_FILE = "onlyhaar_results.txt"
+RESULTS_FILE = "onlyhaar_resultsd2_21.txt"
 COMPUTE = True  
 PLOT = True     
-D_MIN, D_MAX = 2, 20
-N_SAMPLES = 10  # random states per d
+D_MIN, D_MAX = 2, 21
+N_SAMPLES = 100  # random states per d
 N_TERMS = 4     # product states in each mixture (eq 35 has 4)
 SEED = 0        
 TOL = 1e-9      
@@ -99,7 +109,7 @@ def plot_results(data):
     ax.set_xlabel(r"Dimensions $d$")
     ax.set_ylabel(r"Entanglement criterion bound  $2-4/(2+d)$")
     ax.legend(loc="center right")  # the dots fill the bottom of the plot
-    plt.savefig("graph_randombasis.png", dpi=300, bbox_inches="tight")
+    plt.savefig("onlyhaar.png", dpi=300, bbox_inches="tight")
     plt.show()
 
 

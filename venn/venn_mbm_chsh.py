@@ -3,6 +3,9 @@ three strengthened CHSH inequalities (42, 43, 46).
 Saves the numbers for every state in venn_results.txt (autosave every CHECKPOINT_EVERY states,
 resumes after a crash). Μakes the Venn diagrams only from that file."""
 
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))  # repo root, for the shared modules
 from correlation import sum_PCC, CHSH1_value, CHSH2_value, CHSH3_value, is_entangled_PPT
 from results_io import run_checkpointed
 from venn_plot import make_venn_diagrams
